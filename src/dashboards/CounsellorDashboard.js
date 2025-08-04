@@ -10,7 +10,7 @@ const CounsellorDashboard = () => {
         </h1>
         <ul className="space-y-8">
           {[
-            { label: "View Client Bookings", to: "/my-bookings" },  // make sure this route exists
+           
             { label: "Assign Mental Health Quizzes", to: "/counsellor/assign" },
             { label: "View Quiz Results", to: "/counsellor/results" },
             { label: "Update Availability", to: "/availability" }, // ensure this route exists or remove/fix
