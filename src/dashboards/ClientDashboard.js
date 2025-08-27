@@ -9,18 +9,7 @@ const ClientDashboard = () => {
           Client Dashboard
         </h1>
 
-        {/* 🧠 MindMap Quiz Promo */}
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-10 rounded-md">
-          <p className="text-lg font-medium">
-            🧠 New! Take the <span className="font-bold text-indigo-700">MindMap Quiz</span> to get matched with the right counselor.
-          </p>
-          <Link
-            to="/dashboard/mindmap"
-            className="mt-3 inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition"
-          >
-            Take the Quiz Now
-          </Link>
-        </div>
+       
 
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[

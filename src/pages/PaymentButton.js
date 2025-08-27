@@ -1,7 +1,9 @@
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe("pk_test_51RnvFNQJMMhWYwOBVvsgZDnDTrLd8CGujvyyT3ddR1DzC91OjibjOTgOsxdZsqdW3COdHEpWw2HJVq2yfG3qgCeH00io6SPkqS");
+const stripePromise = loadStripe(
+  "pk_test_51RnvFNQJMMhWYwOBVvsgZDnDTrLd8CGujvyyT3ddR1DzC91OjibjOTgOsxdZsqdW3COdHEpWw2HJVq2yfG3qgCeH00io6SPkqS"
+);
 
 const PaymentButton = ({ booking }) => {
   if (!booking) {
@@ -56,12 +58,14 @@ const PaymentButton = ({ booking }) => {
   };
 
   return (
-    <button
-      onClick={handleClick}
-      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-lg px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-xl transition duration-300 ease-in-out"
-    >
-      Pay Now
-    </button>
+    <div className="w-full max-w-5xl mx-auto p-12 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded-2xl shadow-lg flex justify-center">
+      <button
+        onClick={handleClick}
+        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-base px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition duration-300 ease-in-out"
+      >
+        Pay Now
+      </button>
+    </div>
   );
 };
 

@@ -41,11 +41,6 @@ const EditCounselor = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handlePhotoChange = (e) => {
-    setForm((prev) => ({ ...prev, photoFile: e.target.files[0] }));
-  };
-
-  // Available Slots handlers
   const handleSlotChange = (index, value) => {
     const newSlots = [...form.availableSlots];
     newSlots[index] = value;
@@ -68,42 +63,28 @@ const EditCounselor = () => {
         const formData = new FormData();
         formData.append("name", form.name || "");
         formData.append("specialty", form.specialty || "");
-        formData.append("rating", form.rating ? form.rating.toString() : "0");
-
-        form.availableSlots.forEach((slot) => {
-          formData.append("availableSlots", slot);
-        });
-
+        form.availableSlots.forEach((slot) => formData.append("availableSlots", slot));
         formData.append("photo", form.photoFile);
 
-        await axios.put(
-          `https://localhost:7065/api/Counsellors/${editing}/photo`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        await axios.put(`https://localhost:7065/api/Counsellors/${editing}/photo`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
       } else {
         const updateData = {
           name: form.name || "",
           specialty: form.specialty || "",
-          rating: parseFloat(form.rating) || 0,
           availableSlots: form.availableSlots || [],
         };
 
-        await axios.put(
-          `https://localhost:7065/api/Counsellors/${editing}`,
-          updateData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        await axios.put(`https://localhost:7065/api/Counsellors/${editing}`, updateData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
       }
 
       setEditing(null);
@@ -116,49 +97,52 @@ const EditCounselor = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-100 p-6">
-      {/* Back Button on Top Right */}
-      <div className="flex justify-end mb-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 p-6">
+      {/* Back Button */}
+      <div className="flex justify-end mb-6">
         <button
           onClick={() => navigate("/login")}
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition-transform font-semibold"
         >
           Back
         </button>
       </div>
 
-      <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
+      <h2 className="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 drop-shadow-lg">
         Counsellor List
       </h2>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-lg rounded-xl overflow-hidden">
-          <thead className="bg-blue-200 text-blue-900 font-semibold text-left">
+        <table className="min-w-full bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+          <thead className="bg-blue-100 text-blue-900 font-semibold text-left">
             <tr>
               <th className="p-4">Name</th>
               <th className="p-4">Email</th>
               <th className="p-4">Specialty</th>
-              <th className="p-4">Rating</th>
               <th className="p-4 max-w-xs">Available Slots</th>
               <th className="p-4">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {counsellors.map((c) => (
-              <tr key={c.id} className="border-t align-top">
-                <td className="p-4">{c.name}</td>
+            {counsellors.map((c, idx) => (
+              <tr
+                key={c.id}
+                className={`border-t transition-colors duration-200 ${
+                  idx % 2 === 0 ? "bg-white" : "bg-blue-50"
+                } hover:bg-blue-100`}
+              >
+                <td className="p-4 font-medium">{c.name}</td>
                 <td className="p-4">{c.email}</td>
                 <td className="p-4">{c.specialty}</td>
-                <td className="p-4">{c.rating}</td>
                 <td className="p-4 whitespace-pre-line max-w-xs">
-                  {(c.availableSlots && c.availableSlots.length > 0)
+                  {c.availableSlots && c.availableSlots.length > 0
                     ? c.availableSlots.join("\n")
                     : "No slots"}
                 </td>
                 <td className="p-4">
                   <button
                     onClick={() => handleEdit(c)}
-                    className="text-blue-600 font-medium hover:underline"
+                    className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors font-medium"
                   >
                     Edit
                   </button>
@@ -167,7 +151,7 @@ const EditCounselor = () => {
             ))}
             {counsellors.length === 0 && (
               <tr>
-                <td colSpan="6" className="text-center text-gray-600 p-6">
+                <td colSpan="5" className="text-center text-gray-500 p-6">
                   No counsellors found.
                 </td>
               </tr>
@@ -179,8 +163,8 @@ const EditCounselor = () => {
       {/* Edit Modal */}
       {editing && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg max-h-[90vh] overflow-auto">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">Edit Counsellor</h3>
+          <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-auto">
+            <h3 className="text-2xl font-bold text-blue-700 mb-4 text-center">Edit Counsellor</h3>
 
             <div className="space-y-4">
               <div>
@@ -189,7 +173,7 @@ const EditCounselor = () => {
                   name="name"
                   value={form.name || ""}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
               </div>
 
@@ -199,7 +183,7 @@ const EditCounselor = () => {
                   name="email"
                   value={form.email || ""}
                   readOnly
-                  className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed"
+                  className="w-full p-2 border rounded-lg bg-gray-100 cursor-not-allowed"
                 />
               </div>
 
@@ -209,27 +193,13 @@ const EditCounselor = () => {
                   name="specialty"
                   value={form.specialty || ""}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700">Rating</label>
-                <input
-                  name="rating"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="5"
-                  value={form.rating || ""}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
               </div>
 
               {/* Available Slots */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Available Slots</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Available Slots</label>
                 {form.availableSlots?.map((slot, idx) => (
                   <div key={idx} className="flex gap-2 mb-2">
                     <input
@@ -237,12 +207,12 @@ const EditCounselor = () => {
                       value={slot}
                       onChange={(e) => handleSlotChange(idx, e.target.value)}
                       placeholder="YYYY-MM-DD HH:mm"
-                      className="flex-grow p-2 border rounded"
+                      className="flex-grow p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                     />
                     <button
                       type="button"
                       onClick={() => removeSlot(idx)}
-                      className="bg-red-600 text-white px-3 rounded hover:bg-red-700"
+                      className="bg-red-600 text-white px-3 rounded-lg hover:bg-red-700 transition-colors"
                     >
                       Remove
                     </button>
@@ -251,35 +221,23 @@ const EditCounselor = () => {
                 <button
                   type="button"
                   onClick={addSlot}
-                  className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
+                  className="bg-green-600 text-white px-4 py-1 rounded-lg hover:bg-green-700 transition-colors mt-1"
                 >
                   + Add Slot
                 </button>
               </div>
 
-              {/* Uncomment below to enable photo upload */}
-              {/* 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700">Photo</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              */}
-
-              <div className="flex justify-end gap-4 pt-2">
+              {/* Modal Buttons */}
+              <div className="flex justify-end gap-4 pt-4">
                 <button
                   onClick={() => setEditing(null)}
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
+                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleUpdate}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
                   Update
                 </button>
@@ -292,12 +250,12 @@ const EditCounselor = () => {
       {/* Success Popup */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+          <div className="bg-white p-6 rounded-xl shadow-lg text-center w-full max-w-sm">
             <h2 className="text-green-600 text-xl font-bold mb-2">Update Successful</h2>
             <p className="text-gray-700 mb-4">The counsellor details were updated successfully.</p>
             <button
               onClick={() => setShowPopup(false)}
-              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
             >
               OK
             </button>

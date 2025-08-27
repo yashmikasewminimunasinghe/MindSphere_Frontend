@@ -74,7 +74,7 @@ const UpcomingClientSessions = () => {
 
   return (
     <div className="min-h-screen bg-blue-50 flex flex-col items-center py-10 px-4">
-      <h1 className="text-3xl font-bold text-blue-900 mb-8">My Upcoming Sessions (Client)</h1>
+      <h1 className="text-3xl font-bold text-blue-900 mb-8">My Upcoming Sessions</h1>
 
       {/* Alert popup */}
       {showAlert && (

@@ -55,40 +55,46 @@ const UpcomingCounselorSessions = () => {
   }, []);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Upcoming Sessions with Clients (Counselor)</h1>
-      {bookings.length === 0 ? (
-        <p>No sessions found.</p>
-      ) : (
-        bookings.map((booking) => (
-          <div
-            key={booking.id}
-            className="bg-white shadow-sm p-4 rounded border mb-4"
-          >
-            <p>
-              <strong>Client:</strong> {booking.client?.firstName}{" "}
-              {booking.client?.lastName}
-            </p>
-            <p>
-              <strong>Slot:</strong> {new Date(booking.slot).toLocaleString()}
-            </p>
-            {booking.isCanceled ? (
-              <div className="text-red-600 mt-2">
-                Canceled by {booking.canceledBy} on{" "}
-                {new Date(booking.canceledAt).toLocaleString()} <br />
-                Reason: {booking.cancelReason}
-              </div>
-            ) : (
-              <button
-                onClick={() => handleCancel(booking.id)}
-                className="mt-2 bg-red-500 text-white px-3 py-1 rounded"
-              >
-                Cancel
-              </button>
-            )}
-          </div>
-        ))
-      )}
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-blue-100 to-blue-300 p-6">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold text-blue-900 mb-6 text-center">
+          Upcoming Sessions with Clients
+        </h1>
+
+        {bookings.length === 0 ? (
+          <p className="text-center text-blue-700 text-lg">No sessions found.</p>
+        ) : (
+          bookings.map((booking) => (
+            <div
+              key={booking.id}
+              className="bg-white shadow-lg p-5 rounded-2xl border border-blue-200 mb-4 hover:shadow-xl transition"
+            >
+              <p className="text-blue-800 font-medium">
+                <strong>Client:</strong> {booking.client?.firstName}{" "}
+                {booking.client?.lastName}
+              </p>
+              <p className="text-blue-700">
+                <strong>Slot:</strong> {new Date(booking.slot).toLocaleString()}
+              </p>
+
+              {booking.isCanceled ? (
+                <div className="text-red-600 mt-3 font-medium">
+                  Canceled by {booking.canceledBy} on{" "}
+                  {new Date(booking.canceledAt).toLocaleString()} <br />
+                  Reason: {booking.cancelReason}
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleCancel(booking.id)}
+                  className="mt-3 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

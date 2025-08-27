@@ -33,26 +33,28 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 sm:p-10">
-        <h1 className="text-3xl font-bold text-indigo-700 mb-6 text-center">
-          Secure Payment for Session
+    <div className="min-h-screen w-full bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex items-center justify-center p-6">
+      <div className="w-full max-w-6xl bg-white shadow-2xl rounded-3xl p-12 sm:p-16">
+        <h1 className="text-3xl sm:text-4xl font-bold text-indigo-700 mb-8 text-center drop-shadow-md">
+          Payment for Session
         </h1>
-        <div className="space-y-4 text-gray-700 text-lg">
-          <div className="flex justify-between">
+        <div className="space-y-6 text-gray-700 text-lg sm:text-xl">
+          <div className="flex justify-between border-b border-gray-200 pb-2">
             <span className="font-medium">Counsellor:</span>
             <span>{counsellor.name}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between border-b border-gray-200 pb-2">
             <span className="font-medium">Date & Time:</span>
             <span>{new Date(slot).toLocaleString()}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between border-b border-gray-200 pb-2">
             <span className="font-medium">Amount:</span>
-            <span className="text-green-600 font-semibold">$50.00</span>
+            <span className="text-green-600 font-semibold text-lg sm:text-xl">
+              $100.00
+            </span>
           </div>
         </div>
-        <div className="mt-8 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <PaymentButton booking={bookingDetails} />
         </div>
       </div>
