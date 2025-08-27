@@ -6,8 +6,6 @@ const AddCounsellor = ({ onAdd }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [specialty, setSpecialty] = useState("");
-  const [rating, setRating] = useState("");
-  const [photoFile, setPhotoFile] = useState(null);
   const [availableSlots, setAvailableSlots] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false); // modal state
 
@@ -16,36 +14,38 @@ const AddCounsellor = ({ onAdd }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !specialty || !rating) {
+    if (!name || !specialty || !email) {
       alert("Please fill all required fields");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("specialty", specialty);
-    formData.append("rating", rating);
-    if (photoFile) formData.append("photo", photoFile);
-
+    // Convert availableSlots string to array
     const slotsArray = availableSlots
       .split(",")
       .map((slot) => slot.trim())
       .filter(Boolean);
 
-    slotsArray.forEach((slot) => {
-      formData.append("availableSlots", slot);
-    });
+    // Build payload as JSON
+    const payload = {
+      name,
+      email,
+      specialty,
+      availableSlots: slotsArray,
+    };
 
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.post("https://localhost:7065/api/Counsellors", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "https://localhost:7065/api/Counsellors",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (onAdd) onAdd(response.data);
 
@@ -93,7 +93,9 @@ const AddCounsellor = ({ onAdd }) => {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Name *
+            </label>
             <input
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
@@ -104,7 +106,9 @@ const AddCounsellor = ({ onAdd }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Email *
+            </label>
             <input
               type="email"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
@@ -115,37 +119,15 @@ const AddCounsellor = ({ onAdd }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Specialty *</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Specialty *
+            </label>
             <input
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               value={specialty}
               onChange={(e) => setSpecialty(e.target.value)}
               required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Rating (0-5) *</label>
-            <input
-              type="number"
-              step="0.1"
-              min="0"
-              max="5"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Photo</label>
-            <input
-              type="file"
-              accept="image/*"
-              className="w-full bg-white"
-              onChange={(e) => setPhotoFile(e.target.files[0])}
             />
           </div>
 

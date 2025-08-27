@@ -1,11 +1,7 @@
-// PaymentButton.js
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
-// Stripe public key (replace with your live key in production)
-const stripePromise = loadStripe(
-  "pk_test_51RnvFNQJMMhWYwOBVvsgZDnDTrLd8CGujvyyT3ddR1DzC91OjibjOTgOsxdZsqdW3COdHEpWw2HJVq2yfG3qgCeH00io6SPkqS"
-);
+const stripePromise = loadStripe("pk_test_51RnvFNQJMMhWYwOBVvsgZDnDTrLd8CGujvyyT3ddR1DzC91OjibjOTgOsxdZsqdW3COdHEpWw2HJVq2yfG3qgCeH00io6SPkqS");
 
 const PaymentButton = ({ booking }) => {
   if (!booking) {
@@ -33,9 +29,7 @@ const PaymentButton = ({ booking }) => {
         "https://localhost:7065/api/Stripe/create-checkout-session",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
@@ -50,7 +44,7 @@ const PaymentButton = ({ booking }) => {
       const stripe = await stripePromise;
 
       if (stripe) {
-        await stripe.redirectToCheckout({ sessionId: session.id });
+        await stripe.redirectToCheckout({ sessionId: session.sessionId });
       } else {
         console.error("Stripe failed to load");
         alert("Payment failed. Please try again.");

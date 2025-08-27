@@ -13,7 +13,7 @@ const CounsellorDashboard = () => {
            
             { label: "Assign Mental Health Quizzes", to: "/counsellor/assign" },
             { label: "View Quiz Results", to: "/counsellor/results" },
-            { label: "Update Availability", to: "/availability" }, // ensure this route exists or remove/fix
+           
              { label: "View & Cancel Upcoming Appointments", to: "/counselor/upcoming-sessions" },
           ].map(({ label, to }) => (
             <li
