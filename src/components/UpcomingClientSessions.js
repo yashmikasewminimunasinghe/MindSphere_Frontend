@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UpcomingClientSessions = () => {
   const [bookings, setBookings] = useState([]);
@@ -8,6 +9,7 @@ const UpcomingClientSessions = () => {
   const [cancelId, setCancelId] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
 
   const fetchBookings = async () => {
     try {
@@ -73,8 +75,16 @@ const UpcomingClientSessions = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-blue-50 flex flex-col items-center py-10 px-4">
-      <h1 className="text-3xl font-bold text-blue-900 mb-8">My Upcoming Sessions</h1>
+    <div className="min-h-screen bg-blue-50 flex flex-col items-center py-10 px-4 relative">
+      {/* Back button at top-left */}
+      <button
+        onClick={() => navigate("/login")}
+        className="absolute top-4 left-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+      >
+        Back
+      </button>
+
+      <h1 className="text-3xl font-bold text-blue-900 mb-8 mt-6">My Upcoming Sessions</h1>
 
       {/* Alert popup */}
       {showAlert && (

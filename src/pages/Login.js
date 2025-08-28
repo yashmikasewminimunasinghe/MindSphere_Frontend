@@ -132,6 +132,18 @@ const Login = ({ onLogin }) => {
           >
             Forgot Password?
           </button>
+
+          {/* ✅ New Back to Register Button (navigates to /signup) */}
+          <div className="mt-2">
+            <button
+              type="button"
+              onClick={() => navigate("/signup")}
+              className="text-sm text-gray-600 hover:underline font-medium"
+            >
+              Back to Register
+            </button>
+          </div>
+
           {error && (
             <p className="text-red-600 mt-2 text-sm font-medium animate-pulse">
               {error}

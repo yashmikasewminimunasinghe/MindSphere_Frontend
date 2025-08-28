@@ -22,7 +22,7 @@ const AdminDashboard = () => {
               to="/edit-counsellors"
               className="block text-center text-blue-800 font-semibold text-xl hover:underline"
             >
-              View Counselors
+               Edit Counselors
             </Link>
           </li>
           {/* Add more admin links here */}

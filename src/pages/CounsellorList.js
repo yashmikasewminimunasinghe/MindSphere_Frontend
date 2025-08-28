@@ -60,7 +60,7 @@ const CounsellorList = () => {
         >
           <h2 className="text-2xl font-semibold text-purple-800">{counsellor.name}</h2>
           <p className="text-pink-700 font-medium">{counsellor.specialty}</p>
-          <p className="text-sm text-gray-600 italic">⭐ Rating: {counsellor.rating}</p>
+         
           <button
             onClick={() => {
               setSelectedCounsellor(counsellor);
