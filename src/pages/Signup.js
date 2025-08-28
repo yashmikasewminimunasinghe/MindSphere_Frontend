@@ -17,7 +17,7 @@ const Signup = () => {
 
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // 👈 new
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,14 +32,31 @@ const Signup = () => {
     const newErrors = {};
     const { firstName, lastName, email, password, confirmPassword, contactNumber, role } = formData;
 
+    // First Name & Last Name
     if (!firstName.trim()) newErrors.firstName = "First Name is required.";
     if (!lastName.trim()) newErrors.lastName = "Last Name is required.";
+
+    // Email
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailPattern.test(email)) newErrors.email = "Please enter a valid email.";
-    if (!password || password.length < 6) newErrors.password = "Password must be at least 6 characters.";
-    if (confirmPassword !== password) newErrors.confirmPassword = "Passwords do not match.";
+
+    // Contact Number
     if (!contactNumber.trim()) newErrors.contactNumber = "Contact number is required.";
+    else if (!/^\d{10,15}$/.test(contactNumber)) newErrors.contactNumber = "Contact number must be 10-15 digits.";
+
+    // Role
     if (!role) newErrors.role = "Role is required.";
+
+    // Password
+    if (!password) newErrors.password = "Password is required.";
+    else if (password.length < 6) newErrors.password = "Password must be at least 6 characters.";
+    else if (!/[A-Z]/.test(password)) newErrors.password = "Password must include at least one uppercase letter.";
+    else if (!/[a-z]/.test(password)) newErrors.password = "Password must include at least one lowercase letter.";
+    else if (!/[0-9]/.test(password)) newErrors.password = "Password must include at least one number.";
+    else if (!/[!@#$%^&*]/.test(password)) newErrors.password = "Password must include at least one special character.";
+
+    // Confirm Password
+    if (confirmPassword !== password) newErrors.confirmPassword = "Passwords do not match.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -69,7 +86,7 @@ const Signup = () => {
           contactNumber: "",
           role: "",
         });
-        setShowSuccessPopup(true); // 👈 show popup
+        setShowSuccessPopup(true);
       }
     } catch (error) {
       if (error.response) {
@@ -95,7 +112,6 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-blue-100 relative">
-      {/* ✅ Success Modal */}
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm text-center">
@@ -119,11 +135,7 @@ const Signup = () => {
         {apiError && <div className="text-red-600 mb-4 text-center">{apiError}</div>}
 
         <form onSubmit={handleSignup}>
-          {/* Form Fields (same as before) */}
-          {/* ... all inputs, error messages, etc. ... */}
-
           <div className="grid grid-cols-2 gap-4">
-            {/* First Name */}
             <div>
               <label className="block font-semibold text-gray-700">First Name :</label>
               <input
@@ -136,7 +148,6 @@ const Signup = () => {
               {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName}</span>}
             </div>
 
-            {/* Last Name */}
             <div>
               <label className="block font-semibold text-gray-700">Last Name :</label>
               <input
@@ -150,7 +161,6 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Email */}
           <div className="mt-4">
             <label className="block font-semibold text-gray-700">Email Address :</label>
             <input
@@ -163,7 +173,6 @@ const Signup = () => {
             {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
           </div>
 
-          {/* Contact Number */}
           <div className="mt-4">
             <label className="block font-semibold text-gray-700">Contact Number :</label>
             <input
@@ -176,7 +185,6 @@ const Signup = () => {
             {errors.contactNumber && <span className="text-red-500 text-sm">{errors.contactNumber}</span>}
           </div>
 
-          {/* Role */}
           <div className="mt-4">
             <label className="block font-semibold text-gray-700">Role :</label>
             <select
@@ -193,7 +201,6 @@ const Signup = () => {
             {errors.role && <span className="text-red-500 text-sm">{errors.role}</span>}
           </div>
 
-          {/* Passwords */}
           <div className="mt-4">
             <label className="block font-semibold text-gray-700">Password :</label>
             <input
